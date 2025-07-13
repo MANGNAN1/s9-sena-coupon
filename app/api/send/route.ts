@@ -18,13 +18,14 @@ export async function POST(request: NextRequest) {
   try {
     const resp = await fetch(url);
     const data = await resp.json();
-    if (resp.ok) {
+
+    if (data.errorCode === 0) {
       return NextResponse.json({ message: '✅ 쿠폰 등록 성공', result: data });
     } else {
       return NextResponse.json({
         message: `❌ 실패: ${data.errorMessage || '알 수 없는 오류'}`,
         result: data
-      }, { status: resp.status });
+      }, { status: 400 });
     }
   } catch (e: any) {
     return NextResponse.json({ message: '서버 오류 발생', error: e.message }, { status: 500 });
